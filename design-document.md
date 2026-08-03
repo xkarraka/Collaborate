@@ -82,13 +82,13 @@ sequenceDiagram
   participant R as Redis
   participant D as Financial Data API
   C->>S: token-exchange + client_assertion + subject_token + audience
-  S->>S: Verify actor; check subject_token.may_act names actor; check act depth
+  S->>S: Verify actor check subject_token.may_act names actor check act depth
   S->>R: GET snapshot
   R-->>S: Role, overrides, firm flags
   S->>S: Intersect scopes — downgrade only
   S-->>C: sub=user, act=client, aud=financial-data, exp=30s
   C->>D: Request + token
-  D->>D: Validate signature and aud; check scope
+  D->>D: Validate signature and aud check scope
 ```
 
 **Async delegation** (the notification service acting after a comment is posted) has no inbound user token, and putting one in the event payload would write a bearer credential into durable, retried, dead-lettered storage. Instead the event carries the user ID as *data*, the service authenticates as itself, and the exchange re-derives authority from the user's current snapshot. If the user lost access between the comment and the notification, the delegated call is correctly denied — a token in the queue would have preserved stale authority across exactly that gap. Registration constrains which internal services may request delegation and for which scopes.
