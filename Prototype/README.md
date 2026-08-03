@@ -19,10 +19,6 @@ the one business decision this slice needs (documents are the resource,
 `read` is the action checked), so the library stays reusable across services
 that will each have their own resource types.
 
-Targets **.NET 10** (the SDKs installed in this environment are 9 and 10; no
-.NET 8 SDK was available, so the plan's original .NET 8 target was swapped
-for 10 by agreement).
-
 ## Framework vs. custom
 
 | Concern | Approach |
